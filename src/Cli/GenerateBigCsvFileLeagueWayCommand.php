@@ -13,13 +13,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class GenerateBigCsvFileLeagueWayCommand extends Command
 {
-    /** @var Stopwatch */
-    private $stopwatch;
-
-    public function __construct(Stopwatch $stopwatch)
+    public function __construct(private Stopwatch $stopwatch)
     {
         parent::__construct();
-        $this->stopwatch = $stopwatch;
     }
 
     protected function configure()

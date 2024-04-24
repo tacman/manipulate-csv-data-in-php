@@ -31,12 +31,13 @@ class ReadCsvFileLeagueWayCommand extends Command
         // read all lines
         if (true) {
             $csv = Reader::createFromPath($path, 'r');
+            $csv->setDelimiter("\t");
             $csv->setHeaderOffset(0); // use the first line as header for rows
             $header = $csv->getHeader();
             var_dump($header);
             $rows = $csv->getRecords();
             foreach ($rows as $row) {
-                var_dump($row);
+                dd($row);
             }
 
             $output->writeln("I read the CSV File ".$path);
@@ -83,7 +84,7 @@ class ReadCsvFileLeagueWayCommand extends Command
             $csv = Reader::createFromPath($path, 'r');
             $csv->setHeaderOffset(0);
             $stmt = Statement::create()
-                ->where(function($row) { return strpos($row['title'], 'Deadpool') !== false; });
+                ->where(fn($row) => str_contains($row['title'], 'Deadpool'));
             $records = $stmt->process($csv);
             foreach ($records as $row) {
                 var_dump($row);
@@ -95,7 +96,7 @@ class ReadCsvFileLeagueWayCommand extends Command
             $csv = Reader::createFromPath($path, 'r');
             $csv->setHeaderOffset(0);
             $stmt = Statement::create()
-                ->orderBy(function($row1, $row2) { return strcmp($row1['title'], $row2['title']); })
+                ->orderBy(fn($row1, $row2) => strcmp($row1['title'], $row2['title']))
                 ->limit(5);
             $records = $stmt->process($csv);
             foreach ($records as $row) {

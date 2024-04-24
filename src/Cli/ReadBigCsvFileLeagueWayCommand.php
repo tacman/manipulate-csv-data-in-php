@@ -13,13 +13,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class ReadBigCsvFileLeagueWayCommand extends Command
 {
-    /** @var Stopwatch */
-    private $stopwatch;
-
-    public function __construct(Stopwatch $stopwatch)
+    public function __construct(private Stopwatch $stopwatch)
     {
         parent::__construct();
-        $this->stopwatch = $stopwatch;
     }
 
     protected function configure()
@@ -50,7 +46,7 @@ class ReadBigCsvFileLeagueWayCommand extends Command
             $output->writeln("I read ".$csv->count()." rows from the CSV File ".$path);
             $output->writeln((string) $this->stopwatch->getEvent($section));
             return 0;
-        } catch (UnavailableStream $exception) {
+        } catch (UnavailableStream) {
             $output->writeln("File ".$path." does not exist, it has to be generated with the command 'nidup:csv-league:generate-big-csv-file'");
             return -1;
         }
